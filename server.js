@@ -5,22 +5,31 @@ var nameListObjects = [];
 var nameList = [];
 var app = express();
 class User {
- name;
+ number;
  status;
-
-  constructor(name) {
-    this.name = name;
+ wakerNum;
+  constructor(number) {
+    this.number = number;
+    this.wakerNum = null;
+    this.status = "no";
   }
-  getName() {
-    return this.name;
+  getNumber() {
+    return this.number;
   }
 
   getStatus() {
     return this.status;
   }
 
+  getWaker() {
+    return this.wakerNum;
+  }
+
   setStatus(status) {
     this.status = status;
+  }
+  setWaker(waker) {
+    this.wakerNum = waker;
   }
 
 
@@ -34,11 +43,13 @@ app.get("/currency",function(req,res){
 
 
 app.post("/wake",function(req,res){
-	let nameWake = req.body.name;
-	if(nameList.includes(nameWake)){
+	let number_toWake = req.body.number_toWake;
+	let number_waker = req.body.number_waker;
+	if(nameList.includes(number_toWake)){
 		for (i = 0; i < nameListObjects.length; i++) {
-			if(nameListObjects[i].getName() === nameWake){
+			if(nameListObjects[i].getNumber() === number_toWake){
 				nameListObjects[i].setStatus("yes");
+				nameListObjects[i].setWaker(number_waker);
 				res.send("woken");
 			}
 		}
@@ -47,22 +58,22 @@ app.post("/wake",function(req,res){
 
 
 app.post("/checkwake",function(req,res){
-	let nameCheck = req.body.name;
+	let numberCheck = req.body.number;
 	let tmpUser;
-	if(nameList.includes(nameCheck)){
+	if(nameList.includes(numberCheck)){
 		for (i = 0; i < nameListObjects.length; i++) {
-			if(nameCheck === nameListObjects[i].getName()){
-				res.send(nameListObjects[i].getStatus());
+			if(numberCheck === nameListObjects[i].getNumber()){
+				res.send({status:nameListObjects[i].getStatus(), waker: nameListObjects[i].getWaker()});
 				if(nameListObjects[i].getStatus() === "yes"){
 					nameListObjects[i].setStatus("no");
 				}
 			}
 		}
 	}else{
-		tmpUser = new User(nameCheck);
+		tmpUser = new User(numberCheck);
 		tmpUser.setStatus("no");
 		nameListObjects.push(tmpUser);
-		nameList.push(nameCheck);
+		nameList.push(numberCheck);
 		res.send("new user");
 	}
 });
