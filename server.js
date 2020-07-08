@@ -10,7 +10,7 @@ class User {
  wakerNum;
   constructor(number) {
     this.number = number;
-    this.wakerNum = null;
+    this.wakerNum = "none";
     this.status = "no";
   }
   getNumber() {
