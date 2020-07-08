@@ -66,6 +66,7 @@ app.post("/checkwake",function(req,res){
 				res.send({status:nameListObjects[i].getStatus(), waker: nameListObjects[i].getWaker()});
 				if(nameListObjects[i].getStatus() === "yes"){
 					nameListObjects[i].setStatus("no");
+					nameListObjects[i].setWaker("none");
 				}
 			}
 		}
