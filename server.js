@@ -74,7 +74,7 @@ app.post("/checkwake",function(req,res){
 		tmpUser.setStatus("no");
 		nameListObjects.push(tmpUser);
 		nameList.push(numberCheck);
-		res.send("new user");
+		res.send({status:"new user", waker: "none"});
 	}
 });
 
